@@ -1,5 +1,6 @@
 package com.utp.gp.inventarioSMP.entidades;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,8 +20,6 @@ public class Rol {
     private Long id;
     
     @NotEmpty
-    private String descripcion_rol;
-    
-    
-    
+    @Column(name = "descripcion_rol")
+    private String nombre; 
 }
