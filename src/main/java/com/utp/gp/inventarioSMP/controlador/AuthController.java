@@ -14,8 +14,8 @@ public class AuthController {
     @Autowired
     private UsuarioService userService;
     
-    @GetMapping("/")
+    @GetMapping("/inicio")
     public String Inicio(Model model, @AuthenticationPrincipal User user){
-        return "index";
+        return "principal";
     }
 }
