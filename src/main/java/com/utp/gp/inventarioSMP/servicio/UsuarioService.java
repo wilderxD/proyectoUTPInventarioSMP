@@ -4,7 +4,10 @@ import com.utp.gp.inventarioSMP.dao.RolDao;
 import com.utp.gp.inventarioSMP.dao.UsuarioDao;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
 import java.util.Collections;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("userDetailsService")
-public class UsuarioService implements UserDetailsService{
+public class UsuarioService implements UserDetailsService, IUsuario{
     
     @Autowired
     private UsuarioDao usuarioDao;
@@ -36,6 +39,34 @@ public class UsuarioService implements UserDetailsService{
         
         return new User(usuario.getUsername(), usuario.getPassword(), Collections.singletonList(authority));
         
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Usuario> findAll() {
+        return usuarioDao.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Page<Usuario> findAll(Pageable pageable) {
+        return usuarioDao.findAll(pageable);
+    }
+
+    @Override
+    @Transactional
+    public void save(Usuario usuario) {
+        usuarioDao.save(usuario);
+    }
+
+    @Override
+    public Usuario findOne(Long id) {
+        return usuarioDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Long id) {
+        usuarioDao.deleteById(id);
     }
     
     

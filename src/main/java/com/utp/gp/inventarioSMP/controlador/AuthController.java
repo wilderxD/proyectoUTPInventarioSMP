@@ -14,7 +14,7 @@ public class AuthController {
     @Autowired
     private UsuarioService userService;
     
-    @GetMapping("/inicio")
+    @GetMapping({ "/", "/inicio", ""})
     public String Inicio(Model model, @AuthenticationPrincipal User user){
         return "principal";
     }

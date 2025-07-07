@@ -29,17 +29,17 @@ public class Usuario_asignado {
     private String nombre;
     
     @NotEmpty
-    private String codigo_equipo;
+    private int codigo_equipo;
     
     @NotEmpty
-    private String oficina;
+    private int oficina;
     
     @NotNull
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha_asignado;
 
-    public Usuario_asignado(Long id, String codigo, String nombre, String codigo_equipo, String oficina, Date fecha_asignado) {
+    public Usuario_asignado(Long id, String codigo, String nombre, int codigo_equipo, int oficina, Date fecha_asignado) {
         this.id = id;
         this.codigo = codigo;
         this.nombre = nombre;

@@ -14,4 +14,6 @@ public interface IUsuario {
     public void save(Usuario usuario);
     
     public Usuario findOne(Long id);
+    
+    public void delete(Long id);
 }
