@@ -5,8 +5,39 @@
     <head th:replace="~{layout/layout :: head}">        
     </head>
     <body>
-        <header th:replace="layout/layout :: header"></header>
-        
+        <header th:fragment="header">
+            <!-- Barra de navegación lateral -->
+            <nav id="sidebar">                
+                <div class="sidebar-header">
+                    <a th:href="@{/inicio}"><img th:src="@{/images/logo2.png}" alt="logo de la municipalidad" class="img-fluid img-logo"></a>
+                </div>
+                <!-- Menú de navegación -->
+                <ul class="sidebar-menu">
+                    <li>
+                        <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
+                    </li>
+                    <li >
+                        <a href="@{/listarEquipo}"><i class="bi bi-pc-display"></i> Equipos</a>
+                    </li>
+                    <li >
+                        <a href="@{/listarInventario}"><i class="bi bi-clipboard2-check"></i> Inventario</a>
+                    </li>
+                    <li >
+                        <a href="@{/listarAsignacion}"><i class="bi bi-person-gear"></i> Asignacion</a>
+                    </li>
+                    <li >
+                        <a href="@{/listarOficina}"><i class="bi bi-building"></i> Oficinas</a>
+                    </li>
+                    <li >
+                        <a href="@{/cargaMasiva}"><i class="bi bi-upload"></i> Carga masiva</a>
+                    </li>
+                    <li >
+                        <a href="@{/backUp}"><i class="bi bi-database"></i> Backup</a>
+                    </li>
+                </ul>
+            </nav>            
+        </header>
+
         <div class="hero-principal cuerpo">
             <img th:src="@{/images/portada.jpg}" alt="logo de la municipalidad" class="img-fluid img-portada">
         </div>

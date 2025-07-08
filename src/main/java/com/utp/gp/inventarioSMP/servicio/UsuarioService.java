@@ -5,6 +5,7 @@ import com.utp.gp.inventarioSMP.dao.UsuarioDao;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,7 +47,8 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     public List<Usuario> findAll() {
         return usuarioDao.findAll();
     }
-
+    
+    
     @Override
     @Transactional
     public Page<Usuario> findAll(Pageable pageable) {
@@ -68,7 +70,6 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     public void delete(Long id) {
         usuarioDao.deleteById(id);
     }
-    
-    
+      
     
 }

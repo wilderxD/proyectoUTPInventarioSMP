@@ -94,8 +94,12 @@ public class AdministracionController {
     }
     
     @GetMapping("/eliminarUsuario/{id}")
-    public void eliminarUsuario(){
-        
+    public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash){
+        if(id > 0){
+            iUsuario.delete(id);
+            flash.addFlashAttribute("success", "Empleado eliminado con exito!");
+        }
+        return "redirect:/listarUsuario";
     }
     
 }

@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 public interface IUsuario {
     
     public List<Usuario> findAll();
-    
+            
     public Page<Usuario> findAll(Pageable pageable);
     
     public void save(Usuario usuario);

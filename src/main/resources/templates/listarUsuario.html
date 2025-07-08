@@ -12,6 +12,8 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
         <link th:href="@{/css/styles.css}" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.22.2/dist/sweetalert2.min.css" rel="stylesheet">
+        <!-- Font Awesome para íconos -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
     </head>
     <body>
 
@@ -19,7 +21,7 @@
             <!-- Barra de navegación lateral -->
             <nav id="sidebar">                
                 <div class="sidebar-header">
-                    <img th:src="@{/images/logo2.png}" alt="logo de la municipalidad" class="img-fluid img-logo">
+                    <a th:href="@{/inicio}"><img th:src="@{/images/logo2.png}" alt="logo de la municipalidad" class="img-fluid img-logo"></a>
                 </div>
                 <!-- Menú de navegación -->
                 <ul class="sidebar-menu">
@@ -27,49 +29,45 @@
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-pc-display"></i> Equipos</a>
+                        <a href="@{/listarEquipo}"><i class="bi bi-pc-display"></i> Equipos</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-clipboard2-check"></i> Inventario</a>
+                        <a href="@{/listarInventario}"><i class="bi bi-clipboard2-check"></i> Inventario</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-person-gear"></i> Asignacion</a>
+                        <a href="@{/listarAsignacion}"><i class="bi bi-person-gear"></i> Asignacion</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-building"></i> Oficinas</a>
+                        <a href="@{/listarOficina}"><i class="bi bi-building"></i> Oficinas</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-upload"></i> Carga masiva</a>
+                        <a href="@{/cargaMasiva}"><i class="bi bi-upload"></i> Carga masiva</a>
                     </li>
                     <li >
-                        <a href="#"><i class="bi bi-database"></i> Backup</a>
-                    </li>
-                    <li>
-                        <a href="#"><i class="bi bi-box-arrow-right"></i> Salir</a>
-                    </li>
+                        <a href="@{/backUp}"><i class="bi bi-database"></i> Backup</a>
+                    </li>                  
                 </ul>
-            </nav>
-        </header>
-        
-        <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+            </nav>      
+
+            <div class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand titulo-cuerpo" href="/">Gestion de Administracion</a>
+                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Administracion</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    
+
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav me-auto">
                             <!-- Menú principal -->
                         </ul>
-                        
+
                         <div class="d-flex align-items-center">
                             <!-- Usuario autenticado -->
                             <span class="text-light me-3" sec:authorize="isAuthenticated()">
                                 <i class="fas fa-user me-2"></i>
                                 <span sec:authentication="name"></span>
                             </span>
-                            
+
                             <!-- Botón de logout -->
                             <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
                                 <button class="btn btn-outline-light" type="submit">
@@ -80,7 +78,8 @@
                     </div>
                 </div>
             </div>
-                    
+        </header>
+
         <!-- Cuerpo de la pagina web -->
         <div class="container py-4 cuerpo">
             <div class="card">
@@ -96,21 +95,49 @@
                         <div>
                             <a th:href="@{/exportarUsuarioExcel}" class="btn btn-success"><i class="fas fa-file-excel me-2"></i>Exportar Excel</a>
                         </div>
-                    </div>   
-                    <div>
-                        
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">  
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Username</th>
+                                    <th>Rol</th>
+                                    <th>Estado</th>
+                                    <th>Ultima modificación</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="usuario : ${usuarios}">
+                                    <td th:text="${usuario.id}"></td>
+                                    <td th:text="${usuario.username}"></td>                                    
+                                    <td th:text="${usuario.rol?.nombre} ?: 'Sin Rol'"></td>
+                                    <td th:text="${usuario.status}"></td>
+                                    <td th:text="${usuario.fecha_modificacion}"></td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a class="btn btn-info btn-sm" th:href="@{/verUsuario/} + ${usuario.id}"><i class="fas fa-eye"></i></a>
+                                            <a class="btn btn-warning btn-sm" th:href="@{/formularioUsaurio/} + ${usuario.id}"><i class="fas fa-edit"></i></a>
+                                            <a class="btn btn-danger btn-sm" th:href="@{/eliminarUsuario/} + ${usuario.id}" onclick="confirmarEliminacion(event)"><i class="fas fa-trash"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <!--
         <div id="content">
         <!-- Botón para mostrar/ocultar el sidebar en móviles -->
-       <!-- <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
-            <i class="bi bi-list"></i>
-        </button>
-
+        <!-- <button type="button" id="sidebarCollapse" class="btn btn-dark d-md-none">
+             <i class="bi bi-list"></i>
+         </button>
+ 
         <!-- CAMBIAR: Título del documento -->
         <!--<div class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container-fluid">
@@ -126,11 +153,11 @@
         </div>
         
         <!-- Tipo de tabla -->
-       <!-- <div class="mb-4">
-            <h2>Tipo de Tabla</h2>
-            <p>Please see the table in the right of the item. Please note that the table is not displayed</p>
-        </div>
-        
+        <!-- <div class="mb-4">
+             <h2>Tipo de Tabla</h2>
+             <p>Please see the table in the right of the item. Please note that the table is not displayed</p>
+         </div>
+         
         <!-- Tabla principal -->
         <!--<div class="table-container">
             <h3>Contenido de la Tabla</h3>
@@ -148,67 +175,68 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- CAMBIAR: Filas de datos -->
-                       <!-- <tr>
-                            <td>1</td>
-                            <td>2022/01</td>
-                            <td>2020/04/09</td>
-                            <td>2021/07/06</td>
-                            <td>2022/08/05</td>
-                            <td>2023/09/06</td>
-                            <td>2024/09/06</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>2022/02</td>
-                            <td>2021/03/09</td>
-                            <td>2022/04/09</td>
-                            <td>2023/05/09</td>
-                            <td>2024/05/09</td>
-                            <td>2025/05/09</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>2022/03</td>
-                            <td>2021/04/09</td>
-                            <td>2022/05/09</td>
-                            <td>2023/05/09</td>
-                            <td>2024/05/09</td>
-                            <td>2025/05/09</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>2022/04</td>
-                            <td>2021/05/09</td>
-                            <td>2022/06/09</td>
-                            <td>2023/06/09</td>
-                            <td>2024/06/09</td>
-                            <td>2026/06/09</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>2022/05</td>
-                            <td>2021/06/09</td>
-                            <td>2022/07/09</td>
-                            <td>2023/07/09</td>
-                            <td>2024/07/09</td>
-                            <td>2025/07/09</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>2022/06</td>
-                            <td>2021/07/09</td>
-                            <td>2022/08/09</td>
-                            <td>2023/08/09</td>
-                            <td>2024/08/09</td>
-                            <td>2026/08/09</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div> -->
-        
+        <!-- CAMBIAR: Filas de datos -->
+        <!-- <tr>
+             <td>1</td>
+             <td>2022/01</td>
+             <td>2020/04/09</td>
+             <td>2021/07/06</td>
+             <td>2022/08/05</td>
+             <td>2023/09/06</td>
+             <td>2024/09/06</td>
+         </tr>
+         <tr>
+             <td>2</td>
+             <td>2022/02</td>
+             <td>2021/03/09</td>
+             <td>2022/04/09</td>
+             <td>2023/05/09</td>
+             <td>2024/05/09</td>
+             <td>2025/05/09</td>
+         </tr>
+         <tr>
+             <td>3</td>
+             <td>2022/03</td>
+             <td>2021/04/09</td>
+             <td>2022/05/09</td>
+             <td>2023/05/09</td>
+             <td>2024/05/09</td>
+             <td>2025/05/09</td>
+         </tr>
+         <tr>
+             <td>4</td>
+             <td>2022/04</td>
+             <td>2021/05/09</td>
+             <td>2022/06/09</td>
+             <td>2023/06/09</td>
+             <td>2024/06/09</td>
+             <td>2026/06/09</td>
+         </tr>
+         <tr>
+             <td>5</td>
+             <td>2022/05</td>
+             <td>2021/06/09</td>
+             <td>2022/07/09</td>
+             <td>2023/07/09</td>
+             <td>2024/07/09</td>
+             <td>2025/07/09</td>
+         </tr>
+         <tr>
+             <td>6</td>
+             <td>2022/06</td>
+             <td>2021/07/09</td>
+             <td>2022/08/09</td>
+             <td>2023/08/09</td>
+             <td>2024/08/09</td>
+             <td>2026/08/09</td>
+         </tr>
+     </tbody>
+ </table>
+</div>
+</div>
+</div> -->
+
         <footer th:replace="layout/layout :: footer"></footer>
+        
     </body>
 </html>
