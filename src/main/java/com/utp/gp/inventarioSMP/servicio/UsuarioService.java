@@ -3,6 +3,7 @@ package com.utp.gp.inventarioSMP.servicio;
 import com.utp.gp.inventarioSMP.dao.RolDao;
 import com.utp.gp.inventarioSMP.dao.UsuarioDao;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
+import com.utp.gp.inventarioSMP.web.PasswordEncoderConfig;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,6 +27,9 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     
     @Autowired
     private RolDao rolDao;
+    
+    @Autowired
+    private PasswordEncoderConfig passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -56,11 +60,27 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     }
 
     @Override
-    @Transactional
+    @Transactional    
     public void save(Usuario usuario) {
+        // Lógica para encriptar password si es nuevo usuario
+        if(usuario.getId() == null || usuario.getPassword().startsWith("{bcrypt}") == false) {
+            usuario.setPassword(passwordEncoder.passwordEncoder().encode(usuario.getPassword()));
+        }
         usuarioDao.save(usuario);
     }
 
+    public void actualizarUsuario(Usuario usuario, String nuevaPassword) {
+        if(nuevaPassword != null && !nuevaPassword.isEmpty()) {
+            usuario.setPassword(passwordEncoder.passwordEncoder().encode(nuevaPassword));
+        } else if(usuario.getId() != null) {
+            Usuario usuarioExistente = findOne(usuario.getId());
+            if(usuarioExistente != null) {
+                usuario.setPassword(usuarioExistente.getPassword());
+            }
+        }
+        save(usuario);
+    }
+    
     @Override
     public Usuario findOne(Long id) {
         return usuarioDao.findById(id).orElse(null);
@@ -70,6 +90,5 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     public void delete(Long id) {
         usuarioDao.deleteById(id);
     }
-      
     
 }
