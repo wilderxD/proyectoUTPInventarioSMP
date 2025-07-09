@@ -1,9 +1,12 @@
 package com.utp.gp.inventarioSMP.controlador;
 
+import com.utp.gp.inventarioSMP.entidades.Rol;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
+import com.utp.gp.inventarioSMP.servicio.IRol;
 import com.utp.gp.inventarioSMP.servicio.IUsuario;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
 import jakarta.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,9 +28,12 @@ public class AdministracionController {
     @Autowired
     private IUsuario iUsuario;
     
+    @Autowired
+    private IRol iRol;
+    
     @GetMapping("/verUsuario/{id}")
     public String verDetallerDelUsuario(@PathVariable(value = "id") Long id,Map<String, Object> modelo, RedirectAttributes flash){
-        Usuario usuario = iUsuario.findOne(id);
+        Usuario usuario = iUsuario.findOne(id);        
         
         if(usuario == null){
             flash.addFlashAttribute("error", "El Usuario no existe en la base de datos");
@@ -56,7 +62,9 @@ public class AdministracionController {
     @GetMapping("/formularioUsuario")
     public String mostrarFormularioRegistroDeUsuario(Map<String, Object> modelo){
         Usuario usuario = new Usuario();
+        List<Rol> rol = iRol.findAll();
         modelo.put("usuario", usuario);
+        modelo.put("roles", rol);
         modelo.put("titulo", "Registro de Usuario");
         return "formularioUsuario";
     }
@@ -65,7 +73,8 @@ public class AdministracionController {
     public String guardarUsuario(@Valid Usuario usuario, BindingResult result, Model modelo, RedirectAttributes flash, SessionStatus status){
         if(result.hasErrors()){
             modelo.addAttribute("titulo", "Registro de Usuario");
-            return "formularioUsuario";
+            System.out.print(result);
+            return "redirect:/listarUsuarios";            
         }
         
         String mensaje = (usuario.getId() != null? "El usuario a sido actualizado con exito!" : "El usuario a sido guardado con exito!.");
@@ -78,6 +87,7 @@ public class AdministracionController {
     @GetMapping("/formularioUsuario/{id}")
     public String editarUsuario(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash){
         Usuario usuario = null;
+        List<Rol> rol = iRol.findAll();
         if(id > 0){
             usuario = iUsuario.findOne(id);
             if(usuario == null){
@@ -89,6 +99,7 @@ public class AdministracionController {
             return "redirect:/listarUsuario";
         }
         modelo.put("usuario", usuario);
+        modelo.put("roles", rol);
         modelo.put("titulo", "Editar Usuario");
         return "formularioUsuario";
     }

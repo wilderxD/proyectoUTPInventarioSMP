@@ -26,7 +26,7 @@ public class Usuario{
     @NotEmpty
     private String username;
     
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "rol")
     private Rol rol;

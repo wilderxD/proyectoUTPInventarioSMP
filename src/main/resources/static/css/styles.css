@@ -12,6 +12,17 @@ body {
 
 .cuerpo{
     padding-left: 250px;
+    width: calc(100% - 80px);
+    margin: 50px;
+}
+
+.formulario-usuario{
+    padding-left: 20%;
+    margin-top: 5%;
+}
+
+h1.text-center {
+    margin-top: 20px;
 }
 
 #sidebar {
@@ -75,7 +86,7 @@ body {
 .container-logo-login{
     max-height: 100px;
     max-width: 150px;
-        
+
 }
 
 .hero-principal{
@@ -88,7 +99,7 @@ body {
 }
 
 .active{
-    background: blue;    
+    background: blue;
 }
 
 @media (max-width: 768px) {
