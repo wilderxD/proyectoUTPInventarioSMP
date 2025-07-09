@@ -102,33 +102,7 @@ public class AdministracionController {
         flash.addFlashAttribute("success", mensaje);
         return "redirect:/listarUsuario";
         
-        public String guardarUsuario(
-        @Valid Usuario usuario,
-        BindingResult result,
-        @RequestParam(required = false) String nuevaPassword,
-        Model modelo,
-        RedirectAttributes flash,
-        SessionStatus status) {
         
-        if(result.hasErrors()){
-            modelo.addAttribute("titulo", usuario.getId() != null ? "Editar Usuario" : "Nuevo Usuario");
-            modelo.addAttribute("roles", rolService.listarTodosLosRoles());
-            return "formularioUsuario";            
-        }
-        
-        // Manejo especial para actualización de password
-        if(usuario.getId() != null) {
-            ((UsuarioServiceImpl)usuarioService).actualizarUsuario(usuario, nuevaPassword);
-        } else {
-            usuarioService.save(usuario);
-        }
-        
-        status.setComplete();
-        flash.addFlashAttribute("success", usuario.getId() != null ? 
-            "Usuario actualizado correctamente" : "Usuario creado correctamente");
-        
-        return "redirect:/usuarios/listar";
-    }
     }
 
     @GetMapping("/formularioUsuario/{id}")
