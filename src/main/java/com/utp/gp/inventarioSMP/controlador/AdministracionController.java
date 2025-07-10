@@ -44,7 +44,7 @@ public class AdministracionController {
         }
 
         modelo.put("usuario", usuario);
-        modelo.put("titulo", "Detalle del empleado: " + usuario.getUsername());
+        modelo.put("titulo", "Detalle del Usuario: " + usuario.getUsername());
         return "verUsuario";
     }
 
@@ -122,7 +122,7 @@ public class AdministracionController {
     try {
         if (id > 0) {
             iUsuario.delete(id);
-            flash.addFlashAttribute("success", "Empleado eliminado con éxito!");
+            flash.addFlashAttribute("success", "Usuario eliminado con éxito!");
         } else {
             flash.addFlashAttribute("error", "ID inválido");
         }

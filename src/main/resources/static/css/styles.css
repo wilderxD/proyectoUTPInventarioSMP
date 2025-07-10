@@ -100,11 +100,12 @@ h1.text-center {
 
 .active{
     background: blue;
+    color: white;
 }
 
 @media (max-width: 768px) {
     #sidebar {
-        margin-left: -var(--sidebar-width);
+        margin-left: -var(--sidebar-width);        
     }
 
     #content {

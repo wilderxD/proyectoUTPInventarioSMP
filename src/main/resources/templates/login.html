@@ -48,33 +48,20 @@
         
         .logo-container {
             background-image: url(https://images.seeklogo.com/logo-png/48/1/municipalidad-distrital-san-martin-de-porres-logo-png_seeklogo-486447.png);
-            text-align: center;
-            margin-bottom: 1.5rem;
-            border-radius: 50px;
-        }
-        
-        .logo-container img {
-            width: 120px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
             height: 120px;
-            object-fit: cover;
+            width: 120px;
+            margin: 0 auto 1.5rem;
             border-radius: 50%;
             border: 3px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .form-control {
-            height: 50px;
-            border-radius: 8px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            padding-left: 45px;
-            background-color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s;
-        }
-        
-        .form-control:focus {
-            box-shadow: none;
-            border-color: #508bfc;
-            background-color: white;
+        .input-group-custom {
+            position: relative;
+            margin-bottom: 1.5rem;
         }
         
         .input-icon {
@@ -83,12 +70,46 @@
             top: 50%;
             transform: translateY(-50%);
             color: #6c757d;
-            z-index: 5;
+            z-index: 3;
+            pointer-events: none;
         }
         
-        .form-floating label {
-            padding-left: 45px;
+        .form-control-custom {
+            width: 100%;
+            height: 50px;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control-custom:focus {
+            outline: none;
+            border-color: #508bfc;
+            background-color: white;
+            box-shadow: 0 0 0 0.2rem rgba(80, 139, 252, 0.25);
+        }
+        
+        .form-label-custom {
+            position: absolute;
+            left: 45px;
+            top: 15px;
             color: #6c757d;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            background-color: transparent;
+        }
+        
+        .form-control-custom:focus + .form-label-custom,
+        .form-control-custom:not(:placeholder-shown) + .form-label-custom {
+            top: -10px;
+            left: 40px;
+            font-size: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 0 5px;
+            color: #508bfc;
         }
         
         .btn-login {
@@ -98,11 +119,13 @@
             background-color: #508bfc;
             border: none;
             transition: all 0.3s;
+            width: 100%;
         }
         
         .btn-login:hover {
             background-color: #3a7bfc;
             transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(80, 139, 252, 0.4);
         }
         
         .divider {
@@ -133,6 +156,10 @@
         .alert {
             border-radius: 8px;
         }
+        
+        .form-check-label {
+            user-select: none;
+        }
     </style>
 </head>
 <body>
@@ -140,9 +167,7 @@
         <div class="card login-card">
             <div class="card-body">
                 <!-- Logo -->
-                <div class="logo-container">
-                    
-                </div>
+                <div class="logo-container"></div>
                 
                 <!-- Mensajes de error -->
                 <div th:if="${param.error}">
@@ -165,19 +190,19 @@
                 <!-- Formulario de login -->
                 <form th:action="@{/login}" method="post">
                     <!-- Campo Usuario -->
-                    <div class="form-floating mb-4 position-relative">
+                    <div class="input-group-custom">
                         <i class="fas fa-user input-icon"></i>
-                        <input type="text" class="form-control" id="username" name="username" 
-                               placeholder="Nombre de usuario" required>
-                        <label for="username">Nombre de usuario</label>
+                        <input type="text" class="form-control-custom" id="username" name="username" 
+                               placeholder=" " required>
+                        <label for="username" class="form-label-custom">Nombre de usuario</label>
                     </div>
                     
                     <!-- Campo Contraseña -->
-                    <div class="form-floating mb-4 position-relative">
+                    <div class="input-group-custom">
                         <i class="fas fa-lock input-icon"></i>
-                        <input type="password" class="form-control" id="password" name="password" 
-                               placeholder="Contraseña" required>
-                        <label for="password">Contraseña</label>
+                        <input type="password" class="form-control-custom" id="password" name="password" 
+                               placeholder=" " required>
+                        <label for="password" class="form-label-custom">Contraseña</label>
                     </div>
                     
                     <!-- Recordar contraseña -->
@@ -190,7 +215,7 @@
                     </div>
                     
                     <!-- Botón de Login -->
-                    <button type="submit" class="btn btn-primary btn-login w-100 mb-3">
+                    <button type="submit" class="btn btn-primary btn-login mb-3">
                         <i class="fas fa-sign-in-alt me-2"></i> INICIAR SESIÓN
                     </button>
                     
@@ -217,17 +242,6 @@
     <!-- Script personalizado -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Efecto hover en el botón de login
-            const loginBtn = document.querySelector('.btn-login');
-            
-            loginBtn.addEventListener('mouseenter', function() {
-                this.style.boxShadow = '0 5px 15px rgba(80, 139, 252, 0.4)';
-            });
-            
-            loginBtn.addEventListener('mouseleave', function() {
-                this.style.boxShadow = 'none';
-            });
-            
             // Validación del formulario
             const form = document.querySelector('form');
             form.addEventListener('submit', function(e) {
