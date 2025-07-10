@@ -16,4 +16,6 @@ public interface IUsuario {
     public Usuario findOne(Long id);
     
     public void delete(Long id);
+    
+    public void actualizarUsuario(Usuario usuario, String nuevaPassword);
 }

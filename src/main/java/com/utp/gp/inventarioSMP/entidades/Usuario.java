@@ -38,7 +38,7 @@ public class Usuario {
     @NotEmpty
     private String status;
 
-    @NotEmpty
+    
     private String password;
 
     @Column(name = "fecha_modificacion", nullable = false)

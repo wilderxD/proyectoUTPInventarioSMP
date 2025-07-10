@@ -69,6 +69,7 @@ public class UsuarioService implements UserDetailsService, IUsuario{
         usuarioDao.save(usuario);
     }
 
+    @Override
     public void actualizarUsuario(Usuario usuario, String nuevaPassword) {
         if(nuevaPassword != null && !nuevaPassword.isEmpty()) {
             usuario.setPassword(passwordEncoder.passwordEncoder().encode(nuevaPassword));

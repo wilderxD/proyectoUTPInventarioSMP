@@ -87,31 +87,43 @@
                     <div class="card-body">
                         <form th:action="@{/formularioUsuario}" th:object="${usuario}" method="post">
                             <input type="hidden" th:field="*{id}" th:value="${usuario.id}">
-                            <div>
+                            <div class="py-1">
                                 <label>Username: </label>
                                 <input type="text" th:field="*{username}" class="form-control" th:errorClass="form-control alert-danger">
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
                             </div>
-                            <div th:if="${usuario.id == null}">  <!-- Solo para nuevos usuarios -->
+                            <div th:if="${usuario.id == null}" class="py-1">
                                 <div class="form-group">
-                                    <label>Contraseña: </label>
+                                    <label>Contraseña:</label>
                                     <input type="password" 
                                            th:field="*{password}" 
-                                           class="form-control" 
-                                           th:errorclass="is-invalid"
+                                           class="form-control"
                                            required
-                                           minlength="6"/>
+                                           minlength="6"
+                                           th:errorclass="is-invalid"/>
                                     <div class="invalid-feedback" th:errors="*{password}"></div>
                                 </div>
                             </div>
-                            <div>
+
+                            <!-- Para edición -->
+                            <div th:if="${usuario.id != null}" class="py-1">
+                                <div class="form-group">
+                                    <label>Nueva Contraseña (dejar en blanco para no cambiar):</label>
+                                    <input type="password"
+                                           name="nuevaPassword"
+                                           class="form-control"
+                                           minlength="6"
+                                           placeholder="Mínimo 6 caracteres"/>
+                                </div>
+                            </div>
+                            <div class="py-1">
                                 <label>Estado: </label>
                                 <select class="form-control" th:field="*{status}">
                                     <option th:value="ACTIVO">ACTIVO</option>
                                     <option th:value="INACTIVO">INACTIVO</option>                                    
                                 </select>
                             </div>
-                            <div>
+                            <div class="py-1">
                                 <label>Rol: </label>
                                 <select class="form-control" th:field="*{rol}">
                                     <option th:each="rol : ${roles}"
@@ -120,7 +132,7 @@
                                     </option>                                                                        
                                 </select>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group py-1">
                                 <label>Fecha: </label>
                                 <input type="date"
                                        th:field="*{fecha_modificacion}"
@@ -133,7 +145,7 @@
                                        readonly
                                        style="pointer-events: none;"/>
                             </div>
-                            <div class="box-footer">
+                            <div class="box-footer py-1">
                                 <input type="submit" value="Guardar" class="btn btn-primary"/>
                             </div>
                         </form>

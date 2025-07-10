@@ -4,6 +4,7 @@ import com.utp.gp.inventarioSMP.entidades.Rol;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
 import com.utp.gp.inventarioSMP.servicio.IRol;
 import com.utp.gp.inventarioSMP.servicio.IUsuario;
+import com.utp.gp.inventarioSMP.servicio.UsuarioService;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
 import com.utp.gp.inventarioSMP.web.PasswordEncoderConfig;
 import jakarta.validation.Valid;
@@ -32,8 +33,7 @@ public class AdministracionController {
 
     @Autowired
     private IRol iRol;
-    
-    
+
     @GetMapping("/verUsuario/{id}")
     public String verDetallerDelUsuario(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
         Usuario usuario = iUsuario.findOne(id);
@@ -73,36 +73,27 @@ public class AdministracionController {
     }
 
     @PostMapping("/formularioUsuario")
-    public String guardarUsuario(@Valid Usuario usuario, BindingResult result, Model modelo, RedirectAttributes flash, SessionStatus status, @RequestParam(required = false) String nuevaPassword) {
+    public String guardarUsuario(@Valid Usuario usuario, BindingResult result, @RequestParam(required = false) String nuevaPassword, Model modelo, RedirectAttributes flash, SessionStatus status) {
+
         if (result.hasErrors()) {
-            modelo.addAttribute("titulo", "Registro de Usuario");
+            modelo.addAttribute("titulo", usuario.getId() != null ? "Editar Usuario" : "Nuevo Usuario");
             modelo.addAttribute("roles", iRol.findAll());
+            System.out.println(result.getAllErrors());
             return "formularioUsuario";
         }
 
-        if (usuario.getId() != null) { // Es una edición
-            if (nuevaPassword != null && !nuevaPassword.isEmpty()) {
-                // Encriptar nueva contraseña si se proporcionó
-                usuario.setPassword(passwordEncoder.passwordEncoder().encode(nuevaPassword));
-            } else {
-                // Mantener la contraseña existente
-                Usuario usuarioExistente = iUsuario.findById(usuario.getId()).orElse(null);
-                if (usuarioExistente != null) {
-                    usuario.setPassword(usuarioExistente.getPassword());
-                }
-            }
-        } else { // Es un nuevo usuario
-            // Asegurar que la contraseña se encripte
-            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        // Manejo especial para actualización de password
+        if (usuario.getId() != null) {
+            iUsuario.actualizarUsuario(usuario, nuevaPassword);
+            flash.addFlashAttribute("success", "Usuario actualizado correctamente");
+        } else {
+            iUsuario.save(usuario);
+            flash.addFlashAttribute("success", "Usuario creado correctamente");
         }
 
-        String mensaje = (usuario.getId() != null ? "El usuario a sido actualizado con exito!" : "El usuario a sido guardado con exito!.");
-        iUsuario.save(usuario);
-        status.setComplete();
-        flash.addFlashAttribute("success", mensaje);
+        status.setComplete();        
+
         return "redirect:/listarUsuario";
-        
-        
     }
 
     @GetMapping("/formularioUsuario/{id}")
@@ -113,6 +104,7 @@ public class AdministracionController {
             usuario = iUsuario.findOne(id);
             if (usuario == null) {
                 flash.addFlashAttribute("error", "El ID del usuario no existe en la base de datos!");
+                System.out.println(flash);
                 return "redirect:/listarUsuario";
             }
         } else {
@@ -127,11 +119,17 @@ public class AdministracionController {
 
     @GetMapping("/eliminarUsuario/{id}")
     public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    try {
         if (id > 0) {
             iUsuario.delete(id);
-            flash.addFlashAttribute("success", "Empleado eliminado con exito!");
+            flash.addFlashAttribute("success", "Empleado eliminado con éxito!");
+        } else {
+            flash.addFlashAttribute("error", "ID inválido");
         }
-        return "redirect:/listarUsuario";
+    } catch (Exception e) {
+        flash.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
     }
+    return "redirect:/listarUsuario";
+}
 
 }
