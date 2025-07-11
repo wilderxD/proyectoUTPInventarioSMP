@@ -6,8 +6,14 @@ import com.utp.gp.inventarioSMP.servicio.IRol;
 import com.utp.gp.inventarioSMP.servicio.IUsuario;
 import com.utp.gp.inventarioSMP.servicio.UsuarioService;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
+import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterPDF;
 import com.utp.gp.inventarioSMP.web.PasswordEncoderConfig;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +97,7 @@ public class AdministracionController {
             flash.addFlashAttribute("success", "Usuario creado correctamente");
         }
 
-        status.setComplete();        
+        status.setComplete();
 
         return "redirect:/listarUsuario";
     }
@@ -119,17 +125,35 @@ public class AdministracionController {
 
     @GetMapping("/eliminarUsuario/{id}")
     public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
-    try {
-        if (id > 0) {
-            iUsuario.delete(id);
-            flash.addFlashAttribute("success", "Usuario eliminado con éxito!");
-        } else {
-            flash.addFlashAttribute("error", "ID inválido");
+        try {
+            if (id > 0) {
+                iUsuario.delete(id);
+                flash.addFlashAttribute("success", "Usuario eliminado con éxito!");
+            } else {
+                flash.addFlashAttribute("error", "ID inválido");
+            }
+        } catch (Exception e) {
+            flash.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
         }
-    } catch (Exception e) {
-        flash.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
+        return "redirect:/listarUsuario";
     }
-    return "redirect:/listarUsuario";
-}
 
+    @GetMapping("/exportarUsuarioPDF")
+    public void exportarUsuariosPDF(HttpServletResponse response) throws IOException{
+        response.setContentType("application/pdf");
+        
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String fechaActual = dateFormater.format(new Date());
+        
+        String cabecera = "Content-Disposition";
+        String valor = "attachment; filename=Usuarios_" + fechaActual + ".pdf";
+        
+        response.setHeader(cabecera, valor);
+        
+        List<Usuario> usuarios = iUsuario.findAll();
+        
+        UsuarioExporterPDF exporter = new UsuarioExporterPDF(usuarios);
+        exporter.exportar(response);
+    }
+    
 }
