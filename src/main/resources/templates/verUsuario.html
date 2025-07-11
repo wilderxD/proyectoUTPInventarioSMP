@@ -81,7 +81,7 @@
         </header>
 
         <!-- Cuerpo de la pagina web -->
-         <div class="container py-5 formulario-usuario">
+        <div class="container py-5 formulario-usuario">
             <div class="card bg-light">
                 <div class="card-header active" th:text="${titulo}">                    
                 </div>
@@ -93,6 +93,9 @@
                         <li class="list-group-item" th:text="'Estado: ' +${usuario.status}"></li>
                         <li class="list-group-item" th:text="'Fecha de registro: ' +${usuario.fecha_modificacion}"></li>                        
                     </ul>
+                    <button type="button py-3 button-back" class="btn btn-secondary" onclick="history.back()">
+                        Volver Atrás
+                    </button>
                 </div>
             </div>
         </div>     

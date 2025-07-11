@@ -103,6 +103,10 @@ h1.text-center {
     color: white;
 }
 
+.button-back{
+    margin-left: 45%;
+}
+
 @media (max-width: 768px) {
     #sidebar {
         margin-left: -var(--sidebar-width);        
