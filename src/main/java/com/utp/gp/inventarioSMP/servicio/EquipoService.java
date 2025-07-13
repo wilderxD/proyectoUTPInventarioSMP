@@ -43,5 +43,10 @@ public class EquipoService implements IEquipo{
     public void delete(Long id) {
         equipoDao.deleteById(id);
     }
+
+    @Override
+    public void actualizarUsuario(Equipo equipo) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }

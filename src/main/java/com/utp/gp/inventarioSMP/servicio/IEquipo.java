@@ -16,4 +16,6 @@ public interface IEquipo {
     public Equipo findOne(Long id);
     
     public void delete(Long id);
+    
+    public void actualizarUsuario(Equipo equipo);
 }

@@ -4,10 +4,9 @@ import com.utp.gp.inventarioSMP.entidades.Rol;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
 import com.utp.gp.inventarioSMP.servicio.IRol;
 import com.utp.gp.inventarioSMP.servicio.IUsuario;
-import com.utp.gp.inventarioSMP.servicio.UsuarioService;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
+import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterExcel;
 import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterPDF;
-import com.utp.gp.inventarioSMP.web.PasswordEncoderConfig;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -153,6 +151,23 @@ public class AdministracionController {
         List<Usuario> usuarios = iUsuario.findAll();
         
         UsuarioExporterPDF exporter = new UsuarioExporterPDF(usuarios);
+        exporter.exportar(response);
+    }
+    
+    @GetMapping("/exportarUsuarioExcel")
+    public void esportarUsuarioExcel(HttpServletResponse response) throws IOException{
+        response.setContentType("application/octec-stream");
+        DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String fechaActual = dateFormater.format(new Date());
+        
+        String cabecera = "Content-Disposition";
+        String valor = "attachment; filename=Usuarios_" + fechaActual + ".xlsx";
+        
+        response.setHeader(cabecera, valor);
+        
+        List<Usuario> listaUsuarios = iUsuario.findAll();
+        
+        UsuarioExporterExcel exporter = new UsuarioExporterExcel(listaUsuarios);
         exporter.exportar(response);
     }
     
