@@ -100,43 +100,43 @@ public class EquipoController {
     }
 
     @GetMapping("/formularioEquipo/{id}")
-    public String editarUsuario(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
+    public String editarEquipo(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
         Equipo equipo = null;
-        List<Usuario_asignado> rol = iUsuario_asignado.findAll();
+        List<Usuario_asignado> asignados = iAsignado.findAll();
         if (id > 0) {
-            usuario = iUsuario.findOne(id);
-            if (usuario == null) {
-                flash.addFlashAttribute("error", "El ID del usuario no existe en la base de datos!");
+            equipo = iEquipo.findOne(id);
+            if (equipo == null) {
+                flash.addFlashAttribute("error", "El ID del Equipo no existe en la base de datos!");
                 System.out.println(flash);
                 return "redirect:/listarUsuario";
             }
         } else {
-            flash.addFlashAttribute("error", "El ID del usuario no puede ser CERO");
+            flash.addFlashAttribute("error", "El ID del Equipo no puede ser CERO");
             return "redirect:/listarUsuario";
         }
-        modelo.put("usuario", usuario);
-        modelo.put("roles", rol);
-        modelo.put("titulo", "Editar Usuario");
-        return "formularioUsuario";
+        modelo.put("usuario", equipo);
+        modelo.put("roles", asignados);
+        modelo.put("titulo", "Editar Equipo");
+        return "formularioEquipo";
     }
 
-    @GetMapping("/eliminarUsuario/{id}")
-    public String eliminarUsuario(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
+    @GetMapping("/eliminarEquipo/{id}")
+    public String eliminarEquipo(@PathVariable(value = "id") Long id, RedirectAttributes flash) {
         try {
             if (id > 0) {
-                iUsuario.delete(id);
-                flash.addFlashAttribute("success", "Usuario eliminado con éxito!");
+                iEquipo.delete(id);
+                flash.addFlashAttribute("success", "Equipo eliminado con éxito!");
             } else {
                 flash.addFlashAttribute("error", "ID inválido");
             }
         } catch (Exception e) {
             flash.addFlashAttribute("error", "Error al eliminar: " + e.getMessage());
         }
-        return "redirect:/listarUsuario";
+        return "redirect:/listarEquipo";
     }
 
-    @GetMapping("/exportarUsuarioPDF")
-    public void exportarUsuariosPDF(HttpServletResponse response) throws IOException{
+    @GetMapping("/exportarEquipoPDF")
+    public void exportarEquipoPDF(HttpServletResponse response) throws IOException{
         response.setContentType("application/pdf");
         
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -147,14 +147,14 @@ public class EquipoController {
         
         response.setHeader(cabecera, valor);
         
-        List<Usuario> usuarios = iUsuario.findAll();
+        List<Equipo> equipos = iEquipo.findAll();
         
-        UsuarioExporterPDF exporter = new UsuarioExporterPDF(usuarios);
+        EquiposExporterPDF exporter = new UsuarioExporterPDF(equipos);
         exporter.exportar(response);
     }
     
-    @GetMapping("/exportarUsuarioExcel")
-    public void esportarUsuarioExcel(HttpServletResponse response) throws IOException{
+    @GetMapping("/exportarEquipoExcel")
+    public void exportarEquipoExcel(HttpServletResponse response) throws IOException{
         response.setContentType("application/octec-stream");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String fechaActual = dateFormater.format(new Date());
@@ -164,9 +164,9 @@ public class EquipoController {
         
         response.setHeader(cabecera, valor);
         
-        List<Usuario> listaUsuarios = iUsuario.findAll();
+        List<Equipo> listaEquipos = iEquipo.findAll();
         
-        UsuarioExporterExcel exporter = new UsuarioExporterExcel(listaUsuarios);
+        EquipoExporterExcel exporter = new UsuarioExporterExcel(listaEquipos);
         exporter.exportar(response);
     }
     
