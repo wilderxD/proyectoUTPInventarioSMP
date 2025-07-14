@@ -1,14 +1,12 @@
 package com.utp.gp.inventarioSMP.controlador;
 
-import com.utp.gp.inventarioSMP.entidades.Asignado;
 import com.utp.gp.inventarioSMP.entidades.Categoria;
 import com.utp.gp.inventarioSMP.entidades.Equipo;
-import com.utp.gp.inventarioSMP.entidades.Rol;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
-import com.utp.gp.inventarioSMP.servicio.IAsignado;
+import com.utp.gp.inventarioSMP.entidades.Usuario_asignado;
+import com.utp.gp.inventarioSMP.servicio.ICategoria;
 import com.utp.gp.inventarioSMP.servicio.IEquipo;
-import com.utp.gp.inventarioSMP.servicio.IRol;
-import com.utp.gp.inventarioSMP.servicio.IUsuario;
+import com.utp.gp.inventarioSMP.servicio.IUsuario_asignado;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
 import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterExcel;
 import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterPDF;
@@ -41,7 +39,10 @@ public class EquipoController {
     private IEquipo iEquipo;
 
     @Autowired
-    private IAsignado iAsignado;
+    private IUsuario_asignado iAsignado;
+    
+    @Autowired
+    private ICategoria iCategoria;
 
     @GetMapping("/verEquipo/{id}")
     public String verDetallerDelEquipo(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
@@ -74,14 +75,12 @@ public class EquipoController {
     @GetMapping("/formularioEquipo")
     public String mostrarFormularioRegistroDeEquipo(Map<String, Object> modelo) {
         Equipo equipo = new Equipo();
-        List<Asignado> asignados = iAsignado.findAll();
-        List<Categoria> categorias = iCategoria.finAll();
-        List<Moneda> monedas = iModenas.findAll();
+        List<Usuario_asignado> asignados = iAsignado.findAll();
+        List<Categoria> categorias = iCategoria.findAll();        
         modelo.put("equipo", equipo);
         modelo.put("asignados", asignados);
-        modelo.put("categorias", categorias);
-        modelo.put("monedas", monedas);
-        modelo.put("titulo", "Registro de Usuario");
+        modelo.put("categorias", categorias);        
+        modelo.put("titulo", "Registro de Equipos");
         return "formularioEquipo";
     }
 
@@ -90,31 +89,20 @@ public class EquipoController {
 
         if (result.hasErrors()) {
             modelo.addAttribute("titulo", equipo.getId() != null ? "Editar Usuario" : "Nuevo Usuario");
-            modelo.addAttribute("asigandos", iAsignado.findAll());
-            modelo.addAttribute("categorias", iCategoria.findAll());
-            modelo.addAttribute("monedas", iMoneda.findAll());
-            System.out.println(result.getAllErrors());
+            modelo.addAttribute("asignados", iAsignado.findAll());
+            modelo.addAttribute("categorias", iCategoria.findAll());               
             return "formularioEquipo";
         }
-
-        // Manejo especial para actualización de password
-        if (usuario.getId() != null) {
-            iUsuario.actualizarUsuario(usuario, nuevaPassword);
-            flash.addFlashAttribute("success", "Usuario actualizado correctamente");
-        } else {
-            iUsuario.save(usuario);
-            flash.addFlashAttribute("success", "Usuario creado correctamente");
-        }
-
+        
         status.setComplete();
 
         return "redirect:/listarUsuario";
     }
 
-    @GetMapping("/formularioUsuario/{id}")
+    @GetMapping("/formularioEquipo/{id}")
     public String editarUsuario(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
-        Usuario usuario = null;
-        List<Rol> rol = iRol.findAll();
+        Equipo equipo = null;
+        List<Usuario_asignado> rol = iUsuario_asignado.findAll();
         if (id > 0) {
             usuario = iUsuario.findOne(id);
             if (usuario == null) {

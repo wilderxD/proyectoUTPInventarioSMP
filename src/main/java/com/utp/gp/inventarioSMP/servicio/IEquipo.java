@@ -17,5 +17,9 @@ public interface IEquipo {
     
     public void delete(Long id);
     
-    public void actualizarUsuario(Equipo equipo);
+    public void actualizarEquipo(Equipo equipo);
+    
+    public List<Equipo> equiposAsignados();
+    
+    public List<Equipo> equiposNoAsignados();
 }
