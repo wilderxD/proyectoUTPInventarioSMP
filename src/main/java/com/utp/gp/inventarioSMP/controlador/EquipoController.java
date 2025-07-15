@@ -7,6 +7,8 @@ import com.utp.gp.inventarioSMP.entidades.Usuario_asignado;
 import com.utp.gp.inventarioSMP.servicio.ICategoria;
 import com.utp.gp.inventarioSMP.servicio.IEquipo;
 import com.utp.gp.inventarioSMP.servicio.IUsuario_asignado;
+import com.utp.gp.inventarioSMP.util.paginacion.EquipoExporterExcel;
+import com.utp.gp.inventarioSMP.util.paginacion.EquipoExporterPDF;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
 import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterExcel;
 import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterPDF;
@@ -69,7 +71,7 @@ public class EquipoController {
         modelo.addAttribute("equipos", equipos);
         modelo.addAttribute("page", pageRender);
 
-        return "listarEquipos";
+        return "listarEquipo";
     }
 
     @GetMapping("/formularioEquipo")
@@ -77,7 +79,7 @@ public class EquipoController {
         Equipo equipo = new Equipo();
         List<Usuario_asignado> asignados = iAsignado.findAll();
         List<Categoria> categorias = iCategoria.findAll();        
-        modelo.put("equipo", equipo);
+        modelo.put("quipo", equipo);
         modelo.put("asignados", asignados);
         modelo.put("categorias", categorias);        
         modelo.put("titulo", "Registro de Equipos");
@@ -96,7 +98,7 @@ public class EquipoController {
         
         status.setComplete();
 
-        return "redirect:/listarUsuario";
+        return "redirect:/listarEquipo";
     }
 
     @GetMapping("/formularioEquipo/{id}")
@@ -136,7 +138,7 @@ public class EquipoController {
     }
 
     @GetMapping("/exportarEquipoPDF")
-    public void exportarEquipoPDF(HttpServletResponse response) throws IOException{
+    public void exportarEquiposPDF(HttpServletResponse response) throws IOException{
         response.setContentType("application/pdf");
         
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
@@ -149,12 +151,12 @@ public class EquipoController {
         
         List<Equipo> equipos = iEquipo.findAll();
         
-        EquiposExporterPDF exporter = new UsuarioExporterPDF(equipos);
+        EquipoExporterPDF exporter = new EquipoExporterPDF(equipos);
         exporter.exportar(response);
     }
     
     @GetMapping("/exportarEquipoExcel")
-    public void exportarEquipoExcel(HttpServletResponse response) throws IOException{
+    public void exportarEquiposExcel(HttpServletResponse response) throws IOException{
         response.setContentType("application/octec-stream");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String fechaActual = dateFormater.format(new Date());
@@ -166,7 +168,7 @@ public class EquipoController {
         
         List<Equipo> listaEquipos = iEquipo.findAll();
         
-        EquipoExporterExcel exporter = new UsuarioExporterExcel(listaEquipos);
+        EquipoExporterExcel exporter = new EquipoExporterExcel(listaEquipos);
         exporter.exportar(response);
     }
     

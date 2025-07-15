@@ -22,6 +22,6 @@ public class Categoria {
     private String categoria_nombre;
     
     @NotEmpty
-    private int status;
+    private String status;
     
 }

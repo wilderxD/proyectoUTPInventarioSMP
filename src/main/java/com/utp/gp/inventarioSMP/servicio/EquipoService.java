@@ -51,6 +51,7 @@ public class EquipoService implements IEquipo {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Equipo> equiposAsignados() {
 
         List<Equipo> equiposAsignados = new ArrayList<>();
@@ -65,6 +66,7 @@ public class EquipoService implements IEquipo {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Equipo> equiposNoAsignados() {
         List<Equipo> equiposNoAsignados = new ArrayList<>();
         List<Equipo> listaEquipos = equipoDao.findAll();

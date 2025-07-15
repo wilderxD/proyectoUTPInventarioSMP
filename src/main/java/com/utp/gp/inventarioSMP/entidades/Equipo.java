@@ -18,7 +18,8 @@ public class Equipo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-        
+    
+    @NotEmpty
     private String equipo_codigo;
     
     @NotEmpty
@@ -39,13 +40,13 @@ public class Equipo {
     private Categoria categoria;
     
     @NotEmpty
-    private int estado;
+    private String estado;
         
     @ManyToOne
     @JoinColumn(name = "usuarios_asignados")
     private Usuario_asignado asignado;
 
-    public Equipo(Long id, String equipo_codigo, String equipo_descripcion, double valor, String tipoMoneda, String observacion, Categoria categoria, int estado, Usuario_asignado usuario_asignado) {
+    public Equipo(Long id, String equipo_codigo, String equipo_descripcion, double valor, String tipoMoneda, String observacion, Categoria categoria, String estado, Usuario_asignado usuario_asignado) {
         this.id = id;
         this.equipo_codigo = equipo_codigo;
         this.equipo_descripcion = equipo_descripcion;
@@ -55,6 +56,7 @@ public class Equipo {
         this.categoria = categoria;
         this.estado = estado;
         this.asignado = usuario_asignado;
+        
     }
 
     public Equipo() {

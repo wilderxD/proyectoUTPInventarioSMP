@@ -83,11 +83,13 @@ public class UsuarioService implements UserDetailsService, IUsuario{
     }
     
     @Override
+    @Transactional(readOnly = true)
     public Usuario findOne(Long id) {
         return usuarioDao.findById(id).orElse(null);
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         usuarioDao.deleteById(id);
     }

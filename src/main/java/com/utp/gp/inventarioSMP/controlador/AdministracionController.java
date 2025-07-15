@@ -155,7 +155,7 @@ public class AdministracionController {
     }
     
     @GetMapping("/exportarUsuarioExcel")
-    public void esportarUsuarioExcel(HttpServletResponse response) throws IOException{
+    public void exportarUsuarioExcel(HttpServletResponse response) throws IOException{
         response.setContentType("application/octec-stream");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String fechaActual = dateFormater.format(new Date());
