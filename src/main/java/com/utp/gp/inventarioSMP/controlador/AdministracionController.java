@@ -81,8 +81,7 @@ public class AdministracionController {
 
         if (result.hasErrors()) {
             modelo.addAttribute("titulo", usuario.getId() != null ? "Editar Usuario" : "Nuevo Usuario");
-            modelo.addAttribute("roles", iRol.findAll());
-            System.out.println(result.getAllErrors());
+            modelo.addAttribute("roles", iRol.findAll());            
             return "formularioUsuario";
         }
 

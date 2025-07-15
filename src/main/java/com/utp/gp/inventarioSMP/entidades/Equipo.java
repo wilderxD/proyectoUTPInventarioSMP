@@ -1,5 +1,6 @@
 package com.utp.gp.inventarioSMP.entidades;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,42 +9,44 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Entity
 @Table(name = "equipos")
 @Data
 public class Equipo {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @NotEmpty
     private String equipo_codigo;
-    
+
     @NotEmpty
     private String equipo_descripcion;
-    
-    @NotEmpty
+
+    @NotNull
     private double valor;
-    
+
     @NotEmpty
+    @Column(name = "tipo_moneda")
     private String tipoMoneda;
-    
+
     @NotEmpty
     private String observacion;
     
-    @NotEmpty
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "categorias")
+    @JoinColumn(name = "categoria")
     private Categoria categoria;
-    
+
     @NotEmpty
     private String estado;
-        
+
     @ManyToOne
-    @JoinColumn(name = "usuarios_asignados")
+    @JoinColumn(name = "asignado")
     private Usuario_asignado asignado;
 
     public Equipo(Long id, String equipo_codigo, String equipo_descripcion, double valor, String tipoMoneda, String observacion, Categoria categoria, String estado, Usuario_asignado usuario_asignado) {
@@ -56,9 +59,9 @@ public class Equipo {
         this.categoria = categoria;
         this.estado = estado;
         this.asignado = usuario_asignado;
-        
+
     }
 
     public Equipo() {
-    }    
+    }
 }

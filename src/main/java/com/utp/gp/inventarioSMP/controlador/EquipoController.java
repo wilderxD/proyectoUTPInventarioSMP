@@ -79,7 +79,7 @@ public class EquipoController {
         Equipo equipo = new Equipo();
         List<Usuario_asignado> asignados = iAsignado.findAll();
         List<Categoria> categorias = iCategoria.findAll();        
-        modelo.put("quipo", equipo);
+        modelo.put("equipo", equipo);
         modelo.put("asignados", asignados);
         modelo.put("categorias", categorias);        
         modelo.put("titulo", "Registro de Equipos");
@@ -95,9 +95,12 @@ public class EquipoController {
             modelo.addAttribute("categorias", iCategoria.findAll());               
             return "formularioEquipo";
         }
+              
+        String mensaje = (equipo.getId() != null? "El equipo a sido actualizado con exito!" : "El equipo a sido guardado con exito!");
         
+        iEquipo.save(equipo);
         status.setComplete();
-
+        flash.addFlashAttribute("success", mensaje);
         return "redirect:/listarEquipo";
     }
 
@@ -105,19 +108,20 @@ public class EquipoController {
     public String editarEquipo(@PathVariable(value = "id") Long id, Map<String, Object> modelo, RedirectAttributes flash) {
         Equipo equipo = null;
         List<Usuario_asignado> asignados = iAsignado.findAll();
+        List<Categoria> categorias = iCategoria.findAll();
         if (id > 0) {
             equipo = iEquipo.findOne(id);
             if (equipo == null) {
-                flash.addFlashAttribute("error", "El ID del Equipo no existe en la base de datos!");
-                System.out.println(flash);
+                flash.addFlashAttribute("error", "El ID del Equipo no existe en la base de datos!");               
                 return "redirect:/listarUsuario";
             }
         } else {
             flash.addFlashAttribute("error", "El ID del Equipo no puede ser CERO");
             return "redirect:/listarUsuario";
         }
-        modelo.put("usuario", equipo);
-        modelo.put("roles", asignados);
+        modelo.put("equipo", equipo);
+        modelo.put("asignados", asignados);
+        modelo.put("categorias", categorias);
         modelo.put("titulo", "Editar Equipo");
         return "formularioEquipo";
     }

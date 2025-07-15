@@ -35,11 +35,11 @@ public class Usuario_asignado {
     
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "oficinas")
+    @JoinColumn(name = "oficina")
     private Oficina oficina;
         
     @ManyToOne
-    @JoinColumn(name = "equipos")
+    @JoinColumn(name = "codigo_equipo")
     private Equipo equipo;
     
     @Column(name = "fecha_asignado", nullable = false)
