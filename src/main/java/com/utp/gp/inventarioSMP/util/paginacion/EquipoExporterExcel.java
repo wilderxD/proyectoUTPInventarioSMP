@@ -31,7 +31,7 @@ public class EquipoExporterExcel {
         CellStyle estilo = libro.createCellStyle();
         XSSFFont fuente = libro.createFont();
         fuente.setBold(true);
-        fuente.setFontHeight(16);
+        fuente.setFontHeight(11);
         estilo.setFont(fuente);
 
         Cell celda = fila.createCell(0);

@@ -2,7 +2,6 @@ package com.utp.gp.inventarioSMP.controlador;
 
 import com.utp.gp.inventarioSMP.entidades.Categoria;
 import com.utp.gp.inventarioSMP.entidades.Equipo;
-import com.utp.gp.inventarioSMP.entidades.Usuario;
 import com.utp.gp.inventarioSMP.entidades.Usuario_asignado;
 import com.utp.gp.inventarioSMP.servicio.ICategoria;
 import com.utp.gp.inventarioSMP.servicio.IEquipo;
@@ -10,8 +9,6 @@ import com.utp.gp.inventarioSMP.servicio.IUsuario_asignado;
 import com.utp.gp.inventarioSMP.util.paginacion.EquipoExporterExcel;
 import com.utp.gp.inventarioSMP.util.paginacion.EquipoExporterPDF;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
-import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterExcel;
-import com.utp.gp.inventarioSMP.util.paginacion.UsuarioExporterPDF;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import java.io.IOException;
@@ -149,7 +146,7 @@ public class EquipoController {
         String fechaActual = dateFormater.format(new Date());
         
         String cabecera = "Content-Disposition";
-        String valor = "attachment; filename=Usuarios_" + fechaActual + ".pdf";
+        String valor = "attachment; filename=Equipos_" + fechaActual + ".pdf";
         
         response.setHeader(cabecera, valor);
         
@@ -166,7 +163,7 @@ public class EquipoController {
         String fechaActual = dateFormater.format(new Date());
         
         String cabecera = "Content-Disposition";
-        String valor = "attachment; filename=Usuarios_" + fechaActual + ".xlsx";
+        String valor = "attachment; filename=Equipos_" + fechaActual + ".xlsx";
         
         response.setHeader(cabecera, valor);
         

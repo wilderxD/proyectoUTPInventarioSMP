@@ -10,6 +10,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.utp.gp.inventarioSMP.entidades.Equipo;
+import com.utp.gp.inventarioSMP.entidades.Oficina;
 import com.utp.gp.inventarioSMP.entidades.Usuario;
 import com.utp.gp.inventarioSMP.entidades.Usuario_asignado;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,12 +20,12 @@ import java.util.List;
 import lombok.Data;
 
 @Data
-public class EquipoExporterPDF {
+public class OficinaExporterPDF {
 
-    private List<Equipo> listaEquipos;
+    private List<Oficina> listaOficinas;
 
-    public EquipoExporterPDF(List<Equipo> listaEquipos) {
-        this.listaEquipos = listaEquipos;
+    public OficinaExporterPDF(List<Oficina> listaOficinas) {
+        this.listaOficinas = listaOficinas;
     }
 
     private void escribirCabeceraDeLaTabla(PdfPTable tabla) {
@@ -40,48 +41,15 @@ public class EquipoExporterPDF {
         celda.setPhrase(new Phrase("ID", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Codigo del Equipo", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Descripcion", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Valor", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Tipo de moneda", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Observacion", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Categoria", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Estado", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Usuario asignado", fuente));
+        celda.setPhrase(new Phrase("Nombre", fuente));
         tabla.addCell(celda);
     }
 
     private void escribirDatosDeLaTabla(PdfPTable tabla) {
-        for (Equipo equipo : listaEquipos) {
-            tabla.addCell(String.valueOf(equipo.getId()));
-            tabla.addCell(equipo.getEquipo_codigo());
-            tabla.addCell(equipo.getEquipo_descripcion());
-            tabla.addCell(String.valueOf(equipo.getValor()));
-            tabla.addCell(equipo.getTipoMoneda());
-            tabla.addCell(equipo.getObservacion());            
-            tabla.addCell(equipo.getCategoria().getCategoria_nombre());
-            tabla.addCell(equipo.getEstado());
-            Usuario_asignado usuario = equipo.getAsignado();
-            if (usuario != null) {
-                tabla.addCell(usuario.getNombre());
-            } else {
-                tabla.addCell(""); 
-            }
-           
+        for (Oficina oficina : listaOficinas) {
+            tabla.addCell(String.valueOf(oficina.getId()));
+            tabla.addCell(oficina.getNombre_oficina());            
+                      
         }
     }
 
@@ -95,14 +63,14 @@ public class EquipoExporterPDF {
         fuente.setColor(Color.blue);
         fuente.setSize(16);
 
-        Paragraph titulo = new Paragraph("Lista de Equipos", fuente);
+        Paragraph titulo = new Paragraph("Lista de Oficinas", fuente);
         titulo.setAlignment(Paragraph.ALIGN_CENTER);
         documento.add(titulo);
 
-        PdfPTable tabla = new PdfPTable(9);
+        PdfPTable tabla = new PdfPTable(2);
         tabla.setWidthPercentage(100);
         tabla.setSpacingBefore(15);
-        tabla.setWidths(new float[]{1f, 3f, 4f, 1.6f, 2f, 9f, 3f, 2f, 9f});
+        tabla.setWidths(new float[]{3f, 6f});
         tabla.setWidthPercentage(110);
 
         escribirCabeceraDeLaTabla(tabla);

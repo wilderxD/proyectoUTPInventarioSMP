@@ -28,7 +28,7 @@
                     <li >
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
-                    <li class="active">
+                    <li >
                         <a th:href="@{/listarEquipo}"><i class="bi bi-pc-display"></i> Equipos</a>
                     </li>
                     <li >
@@ -37,7 +37,7 @@
                     <li >
                         <a th:href="@{/listarAsignacion}"><i class="bi bi-person-gear"></i> Asignacion</a>
                     </li>
-                    <li >
+                    <li class="active">
                         <a th:href="@{/listarOficina}"><i class="bi bi-building"></i> Oficinas</a>
                     </li>
                     <li >
@@ -51,7 +51,7 @@
 
             <div class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Equipos</a>
+                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Oficinas</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -80,32 +80,32 @@
             </div>
         </header>
 
-        <!-- Cuerpo de la pagina web -->
         <div class="container py-5 formulario-usuario">
-            <div class="card bg-light">
-                <div class="card-header active" th:text="${titulo}">                    
-                </div>
-                <div class="card-body">
-                    <ul class="list-group">
-                        <li class="list-group-item" th:text="'Codigo: ' +${equipo.equipo_codigo}"></li>
-                        <li class="list-group-item" th:text="'Descripcion: ' +${equipo.equipo_descripcion}"></li>
-                        <li class="list-group-item" th:text="'Valor: ' +${equipo.valor}"></li>
-                        <li class="list-group-item" th:text="'Tipo de moneda: ' +${equipo.tipoMoneda}"></li>
-                        <li class="list-group-item" th:text="'Categoria: ' +${equipo.categoria.categoria_nombre}"></li>  
-                        <li class="list-group-item" th:text="'Estado: ' +${equipo.estado}"></li> 
-                        <li class="list-group-item" th:text="'Usuario asignado: ' +${equipo.asignado?.nombre} ?: 'NO ASIGNADO'"></li> 
-                        <li class="list-group-item" th:text="'Observaciones: ' +${equipo.observacion}"></li> 
-                    </ul>
-                    <button type="button" class="btn btn-secondary py-3" onclick="history.back()">
-                        Volver Atrás
-                    </button>
-                </div>
-            </div>
-        </div>     
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-ms-6 container justify-content-center card">
+                    <h1 class="text-center" th:text="${titulo}"></h1>
+                    <div class="card-body">
+                        <form th:action="@{/formularioOficina}" th:object="${oficina}" method="post">
+                            <input type="hidden" th:field="*{id}" th:value="${oficina.id}">
+                            <div class="py-1">
+                                <label>Nombre: </label>
+                                <input type="text" th:field="*{nombre_oficina}" class="form-control" th:errorClass="form-control alert-danger">
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('nombre_oficina')}" th:errors="*{nombre_oficina}">
+                            </div>                                                                                   
+                            <div class="box-footer py-1">
+                                <input type="submit" value="Guardar" class="btn btn-primary button-guardar"/>
+                                <button type="button button-back" class="btn btn-secondary" onclick="history.back()">
+                                    Volver Atrás
+                                </button>
+                            </div>
 
-        <footer th:replace="layout/layout :: footer">
-           
-        </footer>
+                        </form>
+                    </div>
+                </div>
+            </div>            
+        </div>
+
+        <footer th:replace="layout/layout :: footer"></footer>
 
     </body>
 </html>
