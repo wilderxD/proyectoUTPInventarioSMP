@@ -28,7 +28,7 @@
                     <li >
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
-                    <li class="active">
+                    <li >
                         <a th:href="@{/listarEquipo}"><i class="bi bi-pc-display"></i> Equipos</a>
                     </li>
                     <li >
@@ -51,7 +51,7 @@
 
             <div class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Equipos</a>
+                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Asignar equipos</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -87,14 +87,11 @@
                 </div>
                 <div class="card-body">
                     <ul class="list-group">
-                        <li class="list-group-item" th:text="'Codigo: ' +${equipo.equipo_codigo}"></li>
-                        <li class="list-group-item" th:text="'Descripcion: ' +${equipo.equipo_descripcion}"></li>
-                        <li class="list-group-item" th:text="'Valor: ' +${equipo.valor}"></li>
-                        <li class="list-group-item" th:text="'Tipo de moneda: ' +${equipo.tipoMoneda}"></li>
-                        <li class="list-group-item" th:text="'Categoria: ' +${equipo.categoria.categoria_nombre}"></li>  
-                        <li class="list-group-item" th:text="'Estado: ' +${equipo.estado}"></li> 
-                        <li class="list-group-item" th:text="'Usuario asignado: ' +${equipo.asignado?.nombre} ?: 'NO ASIGNADO'"></li> 
-                        <li class="list-group-item" th:text="'Observaciones: ' +${equipo.observacion}"></li> 
+                        <li class="list-group-item" th:text="'ID: ' +${asignado.id}"></li>
+                        <li class="list-group-item" th:text="'DNI: ' +${asignado.codigo}"></li>
+                        <li class="list-group-item" th:text="'Equipo: ' +${asignado.equipo.equipo_descripcion}"></li>
+                        <li class="list-group-item" th:text="'OFicina: ' +${asignado.oficina.nombre_oficina}"></li>
+                        <li class="list-group-item" th:text="'Fecha de Asignacion: ' +${asignado.fecha_asignado}"></li>                          
                     </ul>
                     <button type="button" class="btn btn-secondary py-3" onclick="history.back()">
                         Volver Atrás

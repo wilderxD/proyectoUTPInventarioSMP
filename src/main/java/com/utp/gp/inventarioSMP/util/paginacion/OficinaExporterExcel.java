@@ -50,7 +50,7 @@ public class OficinaExporterExcel {
 
         CellStyle estilo = libro.createCellStyle();
         XSSFFont fuente = libro.createFont();
-        fuente.setFontHeight(16);
+        fuente.setFontHeight(11);
         estilo.setFont(fuente);
 
         for (Oficina oficina : listaOficinas) {

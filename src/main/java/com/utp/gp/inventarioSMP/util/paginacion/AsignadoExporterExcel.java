@@ -65,7 +65,7 @@ public class AsignadoExporterExcel {
 
         CellStyle estilo = libro.createCellStyle();
         XSSFFont fuente = libro.createFont();
-        fuente.setFontHeight(16);
+        fuente.setFontHeight(11);
         estilo.setFont(fuente);
 
         for (Usuario_asignado asignado : listaAsignados) {

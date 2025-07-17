@@ -77,7 +77,7 @@ public class EquipoExporterExcel {
 
         CellStyle estilo = libro.createCellStyle();
         XSSFFont fuente = libro.createFont();
-        fuente.setFontHeight(16);
+        fuente.setFontHeight(11);
         estilo.setFont(fuente);
 
         for (Equipo equipo : listaEquipos) {
