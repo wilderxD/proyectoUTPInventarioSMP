@@ -125,16 +125,7 @@
                                     <option th:value="'INACTIVO'">INACTIVO</option>  
                                     <option th:value="'EN REPARACION'">EN REPARACION</option> 
                                 </select>
-                            </div>
-                            <div class="py-1">
-                                <label>Asignado a: </label>
-                                <select class="form-control" th:field="*{asignado}">
-                                    <option th:each="asignado : ${asignados}"
-                                            th:value="${asignado.id}" 
-                                            th:text="${asignado.nombre}">                                        
-                                    </option>                                                                        
-                                </select>
-                            </div>
+                            </div>                            
                             <div class="py-1">
                                 <label>Observaciones: </label>
                                 <textarea th:field="*{observacion}" class="form-control" th:errorClass="form-control alert-danger" rows="4"></textarea>
