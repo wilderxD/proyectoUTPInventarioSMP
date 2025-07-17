@@ -6,6 +6,8 @@ import com.utp.gp.inventarioSMP.entidades.Usuario_asignado;
 import com.utp.gp.inventarioSMP.servicio.IEquipo;
 import com.utp.gp.inventarioSMP.servicio.IOficina;
 import com.utp.gp.inventarioSMP.servicio.IUsuario_asignado;
+import com.utp.gp.inventarioSMP.util.paginacion.AsignadoExporterExcel;
+import com.utp.gp.inventarioSMP.util.paginacion.AsignadoExporterPDF;
 import com.utp.gp.inventarioSMP.util.paginacion.PageRender;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -31,13 +33,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class Usuario_asignadoController {
-        
+
     @Autowired
     private IUsuario_asignado iAsignado;
-    
+
     @Autowired
     private IEquipo iEquipo;
-    
+
     @Autowired
     private IOficina iOficina;
 
@@ -73,10 +75,10 @@ public class Usuario_asignadoController {
     public String mostrarFormularioRegistroDeAsignado(Map<String, Object> modelo) {
         Usuario_asignado asignado = new Usuario_asignado();
         List<Equipo> equipos = iEquipo.equiposNoAsignados();
-        List<Oficina> oficinas = iOficina.findAll();        
+        List<Oficina> oficinas = iOficina.findAll();
         modelo.put("asignado", asignado);
         modelo.put("equipos", equipos);
-        modelo.put("oficinas", oficinas);        
+        modelo.put("oficinas", oficinas);
         modelo.put("titulo", "Registro Asignacion de Equipos");
         return "formularioAsignado";
     }
@@ -87,13 +89,21 @@ public class Usuario_asignadoController {
         if (result.hasErrors()) {
             modelo.addAttribute("titulo", asignado.getId() != null ? "Editar Asignacion de equipo" : "Nuevo registro de Asignacion");
             modelo.addAttribute("equipos", iEquipo.findAll());
-            modelo.addAttribute("oficinas", iOficina.findAll());               
+            modelo.addAttribute("oficinas", iOficina.findAll());
             return "formularioAsignado";
         }
-              
-        String mensaje = (asignado.getId() != null? "El registro de Asignacion a sido actualizado con exito!" : "El registro de Asignacion a sido guardado con exito!");
+
+        Usuario_asignado usuarioGuardado = iAsignado.save1(asignado);
+
+        // Actualizar el equipo con el ID del usuario asignado
+        if (asignado.getEquipo() != null) {
+            Equipo equipo = asignado.getEquipo();
+            equipo.setAsignado(usuarioGuardado);
+            iEquipo.save(equipo);
+        }
+
+        String mensaje = (asignado.getId() != null ? "El registro de Asignacion a sido actualizado con exito!" : "El registro de Asignacion a sido guardado con exito!");
         
-        iAsignado.save(asignado);
         status.setComplete();
         flash.addFlashAttribute("success", mensaje);
         return "redirect:/listarAsignado";
@@ -107,7 +117,7 @@ public class Usuario_asignadoController {
         if (id > 0) {
             asignado = iAsignado.findOne(id);
             if (asignado == null) {
-                flash.addFlashAttribute("error", "El ID de la Asignacion no existe en la base de datos!");               
+                flash.addFlashAttribute("error", "El ID de la Asignacion no existe en la base de datos!");
                 return "redirect:/listarAsignado";
             }
         } else {
@@ -137,38 +147,38 @@ public class Usuario_asignadoController {
     }
 
     @GetMapping("/exportarAsignadoPDF")
-    public void exportarAsignadosPDF(HttpServletResponse response) throws IOException{
+    public void exportarAsignadosPDF(HttpServletResponse response) throws IOException {
         response.setContentType("application/pdf");
-        
+
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String fechaActual = dateFormater.format(new Date());
-        
+
         String cabecera = "Content-Disposition";
         String valor = "attachment; filename=Asignaciones_" + fechaActual + ".pdf";
-        
+
         response.setHeader(cabecera, valor);
-        
+
         List<Usuario_asignado> asignados = iAsignado.findAll();
-        
+
         AsignadoExporterPDF exporter = new AsignadoExporterPDF(asignados);
         exporter.exportar(response);
     }
-    
+
     @GetMapping("/exportarAsignadoExcel")
-    public void exportarAsignadosExcel(HttpServletResponse response) throws IOException{
+    public void exportarAsignadosExcel(HttpServletResponse response) throws IOException {
         response.setContentType("application/octec-stream");
         DateFormat dateFormater = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
         String fechaActual = dateFormater.format(new Date());
-        
+
         String cabecera = "Content-Disposition";
-        String valor = "attachment; filename=Equipos_" + fechaActual + ".xlsx";
-        
+        String valor = "attachment; filename=Asignaciones_" + fechaActual + ".xlsx";
+
         response.setHeader(cabecera, valor);
-        
+
         List<Usuario_asignado> asignados = iAsignado.findAll();
-        
+
         AsignadoExporterExcel exporter = new AsignadoExporterExcel(asignados);
         exporter.exportar(response);
     }
-    
+
 }

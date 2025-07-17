@@ -39,35 +39,23 @@ public class AsignadoExporterExcel {
         celda.setCellStyle(estilo);
 
         celda = fila.createCell(1);
-        celda.setCellValue("Codigo del Equipo");
+        celda.setCellValue("Nombre");
         celda.setCellStyle(estilo);
 
         celda = fila.createCell(2);
-        celda.setCellValue("descripcion");
+        celda.setCellValue("DNI");
         celda.setCellStyle(estilo);
 
         celda = fila.createCell(3);
-        celda.setCellValue("valor");
+        celda.setCellValue("Descripcion del Equipo");
         celda.setCellStyle(estilo);
 
         celda = fila.createCell(4);
-        celda.setCellValue("tipo moneda");
+        celda.setCellValue("Oficina");
         celda.setCellStyle(estilo);
 
         celda = fila.createCell(5);
-        celda.setCellValue("observacion");
-        celda.setCellStyle(estilo);
-
-        celda = fila.createCell(6);
-        celda.setCellValue("categoria");
-        celda.setCellStyle(estilo);
-
-        celda = fila.createCell(7);
-        celda.setCellValue("estado");
-        celda.setCellStyle(estilo);
-
-        celda = fila.createCell(8);
-        celda.setCellValue("Usuario asignado");
+        celda.setCellValue("Fecha de asignacion");
         celda.setCellStyle(estilo);
     }
 
@@ -89,53 +77,29 @@ public class AsignadoExporterExcel {
             celda.setCellStyle(estilo);
 
             celda = fila.createCell(1);
-            celda.setCellValue(equipo.getEquipo_codigo());
+            celda.setCellValue(asignado.getNombre());
             hoja.autoSizeColumn(1);
             celda.setCellStyle(estilo);
 
             celda = fila.createCell(2);
-            celda.setCellValue(equipo.getEquipo_descripcion());
+            celda.setCellValue(asignado.getCodigo());
             hoja.autoSizeColumn(2);
             celda.setCellStyle(estilo);
 
             celda = fila.createCell(3);
-            celda.setCellValue(equipo.getValor());
+            celda.setCellValue(asignado.getEquipo().getEquipo_descripcion());
             hoja.autoSizeColumn(3);
             celda.setCellStyle(estilo);
 
             celda = fila.createCell(4);
-            celda.setCellValue(equipo.getTipoMoneda());
+            celda.setCellValue(asignado.getOficina().getNombre_oficina());
             hoja.autoSizeColumn(4);
             celda.setCellStyle(estilo);
 
             celda = fila.createCell(5);
-            celda.setCellValue(equipo.getObservacion());
+            celda.setCellValue(asignado.getFecha_asignado().toString());
             hoja.autoSizeColumn(5);
-            celda.setCellStyle(estilo);
-            
-            celda = fila.createCell(6);
-            celda.setCellValue(equipo.getCategoria().getCategoria_nombre());
-            hoja.autoSizeColumn(6);
-            celda.setCellStyle(estilo);
-
-            celda = fila.createCell(7);
-            celda.setCellValue(equipo.getEstado());
-            hoja.autoSizeColumn(7);
-            celda.setCellStyle(estilo);
-
-            Usuario_asignado usuario = equipo.getAsignado();
-            if (usuario != null) {
-                celda = fila.createCell(8);
-                celda.setCellValue(usuario.getNombre());
-                hoja.autoSizeColumn(8);
-                celda.setCellStyle(estilo);
-            } else {
-                celda = fila.createCell(8);
-                celda.setCellValue("");
-                hoja.autoSizeColumn(8);
-                celda.setCellStyle(estilo);
-            }
-           
+            celda.setCellStyle(estilo);            
         }
     }
 

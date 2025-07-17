@@ -25,7 +25,7 @@
                 </div>
                 <!-- Menú de navegación -->
                 <ul class="sidebar-menu">
-                    <li class="active">
+                    <li >
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
                     <li >
@@ -34,7 +34,7 @@
                     <li >
                         <a th:href="@{/listarInventario}"><i class="bi bi-clipboard2-check"></i> Inventario</a>
                     </li>
-                    <li >
+                    <li class="active">
                         <a th:href="@{/listarAsignado}"><i class="bi bi-person-gear"></i> Asignacion</a>
                     </li>
                     <li >
@@ -51,7 +51,7 @@
 
             <div class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <div class="container-fluid">
-                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Administracion</a>
+                    <a class="navbar-brand titulo-cuerpo" href="#">Gestion de Equipos</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
@@ -85,66 +85,62 @@
                 <div class="col-lg-6 col-md-6 col-ms-6 container justify-content-center card">
                     <h1 class="text-center" th:text="${titulo}"></h1>
                     <div class="card-body">
-                        <form th:action="@{/formularioUsuario}" th:object="${usuario}" method="post">
-                            <input type="hidden" th:field="*{id}" th:value="${usuario.id}">
+                        <form th:action="@{/formularioEquipo}" th:object="${equipo}" method="post">
+                            <input type="hidden" th:field="*{id}" th:value="${equipo.id}">
                             <div class="py-1">
-                                <label>Username: </label>
-                                <input type="text" th:field="*{username}" class="form-control" th:errorClass="form-control alert-danger">
-                                <small class="form-text text-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
-                            </div>
-                            <div th:if="${usuario.id == null}" class="py-1">
-                                <div class="form-group">
-                                    <label>Contraseña:</label>
-                                    <input type="password" 
-                                           th:field="*{password}" 
-                                           class="form-control"
-                                           required
-                                           minlength="6"
-                                           th:errorclass="is-invalid"/>
-                                    <div class="invalid-feedback" th:errors="*{password}"></div>
-                                </div>
-                            </div>
-
-                            <!-- Para edición -->
-                            <div th:if="${usuario.id != null}" class="py-1">
-                                <div class="form-group">
-                                    <label>Nueva Contraseña (dejar en blanco para no cambiar):</label>
-                                    <input type="password"
-                                           name="nuevaPassword"
-                                           class="form-control"
-                                           minlength="6"
-                                           placeholder="Mínimo 6 caracteres"/>
-                                </div>
+                                <label>Codigo: </label>
+                                <input type="text" th:field="*{equipo_codigo}" class="form-control" th:errorClass="form-control alert-danger">
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('equipo_codigo')}" th:errors="*{equipo_codigo}">
                             </div>
                             <div class="py-1">
-                                <label>Estado: </label>
-                                <select class="form-control" th:field="*{status}">
-                                    <option th:value="ACTIVO">ACTIVO</option>
-                                    <option th:value="INACTIVO">INACTIVO</option>                                    
+                                <label>Descripcion: </label>
+                                <input type="text" th:field="*{equipo_descripcion}" class="form-control" th:errorClass="form-control alert-danger">
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('equipo_descripcion')}" th:errors="*{equipo_descripcion}">
+                            </div>
+                            <div class="py-1">
+                                <label>Valor: </label>
+                                <input type="text" th:field="*{valor}" class="form-control" th:errorClass="form-control alert-danger">
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}">
+                            </div>
+                            <div class="py-1">
+                                <label>Tipo de moneda: </label>
+                                <select class="form-control" th:field="*{tipoMoneda}">
+                                    <option th:value="SOLES">SOLES</option>
+                                    <option th:value="DOLARES">DOLARES</option>                                       
                                 </select>
                             </div>
                             <div class="py-1">
-                                <label>Rol: </label>
-                                <select class="form-control" th:field="*{rol}">
-                                    <option th:each="rol : ${roles}"
-                                            th:value="${rol.id}" 
-                                            th:text="${rol.nombre}">                                        
+                                <label>Categoria: </label>
+                                <select class="form-control" th:field="*{categoria}">
+                                    <option th:each="categoria : ${categorias}"
+                                            th:value="${categoria.id}" 
+                                            th:text="${categoria.categoria_nombre}">                                        
                                     </option>                                                                        
                                 </select>
                             </div>
-                            <div class="form-group py-1">
-                                <label>Fecha: </label>
-                                <input type="date"
-                                       th:field="*{fecha_modificacion}"
-                                       id="fechaReal"
-                                       style="display: none;"/>
-
-                                <input type="date"
-                                       class="form-control"
-                                       id="fechaVisible"
-                                       readonly
-                                       style="pointer-events: none;"/>
+                            <div class="py-1">
+                                <label>Estado: </label>
+                                <select class="form-control" th:field="*{estado}">
+                                    <option th:value="'ACTIVO'">ACTIVO</option>
+                                    <option th:value="'INACTIVO'">INACTIVO</option>  
+                                    <option th:value="'EN REPARACION'">EN REPARACION</option> 
+                                </select>
                             </div>
+                            <div class="py-1">
+                                <label>Asignado a: </label>
+                                <select class="form-control" th:field="*{asignado}">
+                                    <option th:each="asignado : ${asignados}"
+                                            th:value="${asignado.id}" 
+                                            th:text="${asignado.nombre}">                                        
+                                    </option>                                                                        
+                                </select>
+                            </div>
+                            <div class="py-1">
+                                <label>Observaciones: </label>
+                                <textarea th:field="*{observacion}" class="form-control" th:errorClass="form-control alert-danger" rows="4"></textarea>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('observacion')}" th:errors="*{observacion}">
+                            </div>
+                           
                             <div class="box-footer py-1">
                                 <input type="submit" value="Guardar" class="btn btn-primary button-guardar"/>
                                 <button type="button button-back" class="btn btn-secondary" onclick="history.back()">

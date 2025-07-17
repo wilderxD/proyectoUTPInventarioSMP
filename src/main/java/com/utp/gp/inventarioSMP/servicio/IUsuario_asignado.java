@@ -12,6 +12,8 @@ public interface IUsuario_asignado {
     
     public void save(Usuario_asignado Usuario_asignado);
     
+    public Usuario_asignado save1(Usuario_asignado usuario_asignado);
+    
     public Usuario_asignado findOne(Long id);
     
     public void delete(Long id);

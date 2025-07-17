@@ -110,11 +110,11 @@ public class EquipoController {
             equipo = iEquipo.findOne(id);
             if (equipo == null) {
                 flash.addFlashAttribute("error", "El ID del Equipo no existe en la base de datos!");               
-                return "redirect:/listarUsuario";
+                return "redirect:/listarEquipo";
             }
         } else {
             flash.addFlashAttribute("error", "El ID del Equipo no puede ser CERO");
-            return "redirect:/listarUsuario";
+            return "redirect:/listarEquipo";
         }
         modelo.put("equipo", equipo);
         modelo.put("asignados", asignados);

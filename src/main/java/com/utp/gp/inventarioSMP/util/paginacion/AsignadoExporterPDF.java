@@ -21,10 +21,10 @@ import lombok.Data;
 @Data
 public class AsignadoExporterPDF {
 
-    private List<Equipo> listaEquipos;
+    private List<Usuario_asignado> listaAsignados;
 
-    public AsignadoExporterPDF(List<Equipo> listaEquipos) {
-        this.listaEquipos = listaEquipos;
+    public AsignadoExporterPDF(List<Usuario_asignado> listaAsignados) {
+        this.listaAsignados = listaAsignados;
     }
 
     private void escribirCabeceraDeLaTabla(PdfPTable tabla) {
@@ -40,48 +40,30 @@ public class AsignadoExporterPDF {
         celda.setPhrase(new Phrase("ID", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Codigo del Equipo", fuente));
+        celda.setPhrase(new Phrase("Nombre", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Descripcion", fuente));
+        celda.setPhrase(new Phrase("DNI", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Valor", fuente));
+        celda.setPhrase(new Phrase("Descripcion equipo", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Tipo de moneda", fuente));
+        celda.setPhrase(new Phrase("Oficina", fuente));
         tabla.addCell(celda);
 
-        celda.setPhrase(new Phrase("Observacion", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Categoria", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Estado", fuente));
-        tabla.addCell(celda);
-
-        celda.setPhrase(new Phrase("Usuario asignado", fuente));
+        celda.setPhrase(new Phrase("Fecha de asignacion", fuente));
         tabla.addCell(celda);
     }
 
     private void escribirDatosDeLaTabla(PdfPTable tabla) {
-        for (Equipo equipo : listaEquipos) {
-            tabla.addCell(String.valueOf(equipo.getId()));
-            tabla.addCell(equipo.getEquipo_codigo());
-            tabla.addCell(equipo.getEquipo_descripcion());
-            tabla.addCell(String.valueOf(equipo.getValor()));
-            tabla.addCell(equipo.getTipoMoneda());
-            tabla.addCell(equipo.getObservacion());            
-            tabla.addCell(equipo.getCategoria().getCategoria_nombre());
-            tabla.addCell(equipo.getEstado());
-            Usuario_asignado usuario = equipo.getAsignado();
-            if (usuario != null) {
-                tabla.addCell(usuario.getNombre());
-            } else {
-                tabla.addCell(""); 
-            }
-           
+        for (Usuario_asignado asignado : listaAsignados) {
+            tabla.addCell(String.valueOf(asignado.getId()));
+            tabla.addCell(asignado.getNombre());
+            tabla.addCell(asignado.getCodigo());
+            tabla.addCell(asignado.getEquipo().getEquipo_descripcion());
+            tabla.addCell(asignado.getOficina().getNombre_oficina());
+            tabla.addCell(asignado.getFecha_asignado().toString());
         }
     }
 
@@ -95,14 +77,14 @@ public class AsignadoExporterPDF {
         fuente.setColor(Color.blue);
         fuente.setSize(16);
 
-        Paragraph titulo = new Paragraph("Lista de Equipos", fuente);
+        Paragraph titulo = new Paragraph("Lista de Asignaciones", fuente);
         titulo.setAlignment(Paragraph.ALIGN_CENTER);
         documento.add(titulo);
 
-        PdfPTable tabla = new PdfPTable(9);
+        PdfPTable tabla = new PdfPTable(6);
         tabla.setWidthPercentage(100);
         tabla.setSpacingBefore(15);
-        tabla.setWidths(new float[]{1f, 3f, 4f, 1.6f, 2f, 9f, 3f, 2f, 9f});
+        tabla.setWidths(new float[]{1f, 4f, 2f, 6f, 4f, 4f});
         tabla.setWidthPercentage(110);
 
         escribirCabeceraDeLaTabla(tabla);

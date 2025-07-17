@@ -31,6 +31,12 @@ public class Usuario_asignadoService implements IUsuario_asignado{
     public void save(Usuario_asignado usuario_asignado) {
         asignadoDao.save(usuario_asignado);
     }
+    
+    @Override
+    @Transactional
+    public Usuario_asignado save1(Usuario_asignado usuario_asignado) {
+        return asignadoDao.save(usuario_asignado);
+    }
 
     @Override
     @Transactional(readOnly = true)
