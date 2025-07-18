@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Table(name = "equipos")
@@ -40,6 +41,7 @@ public class Equipo {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "categoria")
+    @ToString.Exclude
     private Categoria categoria;
 
     @NotEmpty
@@ -47,6 +49,7 @@ public class Equipo {
 
     @ManyToOne
     @JoinColumn(name = "asignado")
+    @ToString.Exclude
     private Usuario_asignado asignado;
 
     public Equipo(Long id, String equipo_codigo, String equipo_descripcion, double valor, String tipoMoneda, String observacion, Categoria categoria, String estado, Usuario_asignado usuario_asignado) {

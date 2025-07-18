@@ -14,6 +14,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
@@ -36,10 +37,12 @@ public class Usuario_asignado {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "oficina")
+    @ToString.Exclude
     private Oficina oficina;
         
     @ManyToOne
     @JoinColumn(name = "codigo_equipo")
+    @ToString.Exclude
     private Equipo equipo;
     
     @Column(name = "fecha_asignado", nullable = false)

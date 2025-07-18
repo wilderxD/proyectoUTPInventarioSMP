@@ -21,5 +21,6 @@ public interface IEquipo {
     
     public List<Equipo> equiposAsignados();
     
-    public List<Equipo> equiposNoAsignados();
+    public List<Equipo> equiposNoAsignados();    
+
 }
