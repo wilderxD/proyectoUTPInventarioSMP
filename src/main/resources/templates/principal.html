@@ -13,7 +13,7 @@
                 </div>
                 <!-- Menú de navegación -->
                 <ul class="sidebar-menu">
-                    <li>
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
                     <li >
@@ -25,13 +25,13 @@
                     <li >
                         <a th:href="@{/listarAsignado}"><i class="bi bi-person-gear"></i> Asignacion</a>
                     </li>
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/listarOficina}"><i class="bi bi-building"></i> Oficinas</a>
                     </li>
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/cargaMasiva}"><i class="bi bi-upload"></i> Carga masiva</a>
                     </li>
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/backUp}"><i class="bi bi-database"></i> Backup</a>
                     </li>
                 </ul>

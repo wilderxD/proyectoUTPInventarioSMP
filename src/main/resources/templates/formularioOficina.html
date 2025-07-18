@@ -20,12 +20,12 @@
         <header th:fragment="header">
             <!-- Barra de navegación lateral -->
             <nav id="sidebar">                
-                <div class="sidebar-header">
+                <div class="sidebar-header" >
                     <a th:href="@{/inicio}"><img th:src="@{/images/logo2.png}" alt="logo de la municipalidad" class="img-fluid img-logo"></a>
                 </div>
                 <!-- Menú de navegación -->
                 <ul class="sidebar-menu">
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/listarUsuario}"><i class="bi bi-building-gear"></i> Administración</a>
                     </li>
                     <li >
@@ -37,13 +37,13 @@
                     <li >
                         <a th:href="@{/listarAsignado}"><i class="bi bi-person-gear"></i> Asignacion</a>
                     </li>
-                    <li class="active">
+                    <li class="active" sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/listarOficina}"><i class="bi bi-building"></i> Oficinas</a>
                     </li>
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/cargaMasiva}"><i class="bi bi-upload"></i> Carga masiva</a>
                     </li>
-                    <li >
+                    <li sec:authorize="hasRole('ADMIN')">
                         <a th:href="@{/backUp}"><i class="bi bi-database"></i> Backup</a>
                     </li>                  
                 </ul>
