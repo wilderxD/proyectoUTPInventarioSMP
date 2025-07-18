@@ -93,8 +93,8 @@
                                         id="dropdownCategoria" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="fas fa-tags me-2"></i>
                                     <span th:if="${selectedCategoria != null}">
-    Categoría: [[${#lists.isEmpty(categorias.?[id == selectedCategoria]) ? 'Desconocida' : categorias.?[id == selectedCategoria].get(0).categoria_nombre}]]
-</span>
+                                        Categoría: [[${#lists.isEmpty(categorias.?[id == selectedCategoria]) ? 'Desconocida' : categorias.?[id == selectedCategoria].get(0).categoria_nombre}]]
+                                    </span>
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownCategoria">
                                     <li>
@@ -144,7 +144,7 @@
                             <!-- Botones de Exportación -->
                             <div class="btn-group">
                                 <a th:href="@{/exportarEquipoPDF(categoriaId=${selectedCategoria}, asignacion=${selectedAsignacion})}" 
-                                   class="btn btn-secondary">
+                                   class="btn btn-secondary me-2">
                                     <i class="fas fa-file-pdf me-2"></i>PDF
                                 </a>
                                 <a th:href="@{/exportarEquipoExcel(categoriaId=${selectedCategoria}, asignacion=${selectedAsignacion})}" 
@@ -157,22 +157,20 @@
 
                     <!-- Mostrar filtros aplicados -->
                     <div th:if="${selectedCategoria != null or selectedAsignacion != null}" class="mb-3">
-                        <span class="badge bg-info text-dark me-2">
-                            <i class="fas fa-filter me-1"></i> Filtros aplicados:
-                        </span>
-                        <span th:if="${selectedCategoria != null}" class="badge bg-light text-dark me-2">
-                            Categoría: [[${categorias.?[id == selectedCategoria][0].categoria_nombre}]]
-                            <a th:href="@{/listarInventario(asignacion=${selectedAsignacion})}" class="ms-2 text-danger">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        </span>
-                        <span th:if="${selectedAsignacion != null}" class="badge bg-light text-dark">
-                            <span th:text="${selectedAsignacion == 'asignados' ? 'Asignados' : 'Sin asignar'}"></span>
-                            <a th:href="@{/listarInventario(categoriaId=${selectedCategoria})}" class="ms-2 text-danger">
-                                <i class="fas fa-times"></i>
-                            </a>
-                        </span>
-                    </div>
+    <span th:if="${selectedCategoria != null}" class="badge bg-light text-dark me-2">
+        Categoría: [[${nombreCategoriaSeleccionada}]]
+        <a th:href="@{/listarInventario(asignacion=${selectedAsignacion})}" class="ms-2 text-danger">
+            <i class="fas fa-times"></i>
+        </a>
+    </span>
+    
+    <span th:if="${selectedAsignacion != null}" class="badge bg-light text-dark">
+        <span th:text="${selectedAsignacion == 'asignados' ? 'Asignados' : 'Sin asignar'}"></span>
+        <a th:href="@{/listarInventario(categoriaId=${selectedCategoria})}" class="ms-2 text-danger">
+            <i class="fas fa-times"></i>
+        </a>
+    </span>
+</div>
 
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">

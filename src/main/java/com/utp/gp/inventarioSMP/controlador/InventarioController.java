@@ -36,33 +36,38 @@ public class InventarioController {
 
         Pageable pageRequest = PageRequest.of(page, 10);
         Page<Equipo> equipos;
+        List<Categoria> categorias = iCategoria.findAll();
 
-        // Lógica de filtrado completa
+        // Lógica de filtrado
         if (categoriaId != null && categoriaId > 0) {
             equipos = iEquipo.findByCategoriaId(categoriaId, pageRequest);
         } else if (asignacion != null) {
-            if ("asignados".equals(asignacion)) {
-                equipos = iEquipo.findByAsignadoIsNotNull(pageRequest);
-            } else if ("sin-asignar".equals(asignacion)) {
-                equipos = iEquipo.findByAsignadoIsNull(pageRequest);
-            } else {
-                equipos = iEquipo.findAll(pageRequest);
-            }
+            equipos = "asignados".equals(asignacion)
+                    ? iEquipo.findByAsignadoIsNotNull(pageRequest)
+                    : iEquipo.findByAsignadoIsNull(pageRequest);
         } else {
             equipos = iEquipo.findAll(pageRequest);
         }
 
-        // Asegúrate de enviar estos atributos al modelo
-        List<Categoria> categorias = iCategoria.findAll();
+        // Obtener nombre de categoría
+        String nombreCategoria = "Desconocida";
+        if (categoriaId != null && categoriaId > 0) {
+            nombreCategoria = categorias.stream()
+                    .filter(c -> categoriaId.equals(c.getId()))
+                    .findFirst()
+                    .map(Categoria::getCategoria_nombre)
+                    .orElse("Desconocida");
+        }
 
         modelo.addAttribute("titulo", "Listado de Equipos");
         modelo.addAttribute("equipos", equipos);
         modelo.addAttribute("categorias", categorias);
         modelo.addAttribute("selectedCategoria", categoriaId);
         modelo.addAttribute("selectedAsignacion", asignacion);
-        modelo.addAttribute("page", new PageRender<>("/listarEquipo", equipos));
+        modelo.addAttribute("nombreCategoriaSeleccionada", nombreCategoria);
+        modelo.addAttribute("page", new PageRender<>("/listarInventario", equipos));
 
-        return "listarInventario"; // Asegúrate que coincida con tu template
+        return "listarInventario";
     }
 
     @GetMapping("/exportarInventarioPDF")

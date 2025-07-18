@@ -128,7 +128,7 @@
                             </div>                            
                             <div class="py-1">
                                 <label>Observaciones: </label>
-                                <textarea th:field="*{observacion}" class="form-control" th:errorClass="form-control alert-danger" rows="4"></textarea>
+                                <textarea th:field="*{observacion}" class="form-control" th:errorClass="form-control" rows="4"></textarea>
                                 <small class="form-text text-danger" th:if="${#fields.hasErrors('observacion')}" th:errors="*{observacion}">
                             </div>
                            
