@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+    <head th:replace="~{layout/layout :: head}">        
+        <title>Backup de Base de Datos</title>
+    </head>
+    <body>
+        <header th:replace="~{layout/layout :: header}"></header>
+        
+        <div class="main-content">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Generar Backup de Base de Datos</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle-fill"></i> 
+                            Esta opción permite generar un respaldo completo de la base de datos del sistema.
+                        </div>
+                        
+                        <div class="text-center mt-4">
+                            <a th:href="@{/generarBackup}" class="btn btn-success btn-lg">
+                                <i class="bi bi-database-down"></i> Generar Backup
+                            </a>
+                        </div>
+                        
+                        <div class="mt-4 alert alert-warning">
+                            <i class="bi bi-exclamation-triangle-fill"></i> 
+                            <strong>Nota:</strong> El archivo de backup se descargará automáticamente en formato SQL.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer th:replace="~{layout/layout :: footer}"></footer>
+    </body>
+</html>
